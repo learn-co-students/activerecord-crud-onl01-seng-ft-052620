@@ -8,3 +8,17 @@ require 'sinatra/activerecord/rake'
 task :console do
   Pry.start
 end
+
+task :environment do
+  require_relative 'config/environment'
+end
+
+Rake::Task["db:drop"].clear
+
+namespace :db do
+  task :drop => :environment do
+    puts "Dropping tables"
+    File.delete('db/schema.rb')
+    drop_db
+  end
+end
